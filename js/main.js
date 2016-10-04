@@ -2,7 +2,7 @@
 
 var PlaneManGame = function() {
     this.colors = {
-		white: 0xffffff,
+		whiteSolid: 0xffffff,
 		black: 0x000000,
 		lightGrey: 0xaaaaaa,
 		red: 0xf25346,
@@ -81,10 +81,27 @@ PlaneManGame.prototype.createLights = function() {
 		this.lights.opacity90
 	);
 
-	this.shadowLight = new THREE.DirectionalLight(
-		this.colors.white,
+	this.shadow = new THREE.DirectionalLight(
+		this.colors.whiteSolid,
 		this.lights.opacity90
 	);
+
+	// direction of the light
+	this.shadow.position.set(150, 350, 350);
+
+	this.shadow.castShadow = true;
+	this.shadow.shadow.camera.left = -400;
+	this.shadow.shadow.camera.right = 400;
+	this.shadow.shadow.camera.top = 400;
+	this.shadow.shadow.camera.bottom = -400;
+	this.shadow.shadow.camera.near = 1;
+	this.shadow.shadow.camera.far = 1000;
+	this.shadow.shadow.mapSize.width = 2048;
+	this.shadow.shadow.mapSize.height = 2048;
+
+	//add lights to `this.scene`
+	this.scene.add(this.hemisphereLight);
+	this.scene.add(this.shadow);
 };
 
 var newGame = new PlaneManGame();
