@@ -1,15 +1,22 @@
 //Messing about with three.js here..
 
 var PlaneManGame = function() {
-    this.Colors = {
-            red:0xf25346,
-            white:0xd8d0d1,
-            brown:0x59332e,
-            pink:0xF5986E,
-            brownDark:0x23190f,
-            blue:0x68c3c0,
-            fogColor: 0xf7d9aa
-        };
+    this.colors = {
+		white: 0xffffff,
+		black: 0x000000,
+		lightGrey: 0xaaaaaa,
+		red: 0xf25346,
+		white: 0xd8d0d1,
+		brown: 0x59332e,
+		pink: 0xF5986E,
+		brownDark: 0x23190f,
+		blue: 0x68c3c0,
+		fogColor: 0xf7d9aa
+	};
+
+	this.lights = {
+		opacity90: 0.9
+	};
 
     this.events = {
         load: 'load',
@@ -23,7 +30,7 @@ PlaneManGame.prototype.createScene = function() {
     this.HEIGHT = window.innerHeight;
     this.WIDTH = window.innerWidth;
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.Fog(this.Colors.fogColor, 100, 950);
+    this.scene.fog = new THREE.Fog(this.colors.fogColor, 100, 950);
     this.aspectRatio = (this.WIDTH / this.HEIGHT);
     this.fieldOfView = 60;
     this.nearPlane = 1;
@@ -64,6 +71,20 @@ PlaneManGame.prototype.handleWindowResize = function() {
 PlaneManGame.prototype.init = function() {
     console.log('start');
     this.createScene();
+	this.createLights();
+};
+
+PlaneManGame.prototype.createLights = function() {
+	this.hemisphereLight = new THREE.HemisphereLight(
+		this.colors.lightGrey,
+		this.colors.black,
+		this.lights.opacity90
+	);
+
+	this.shadowLight = new THREE.DirectionalLight(
+		this.colors.white,
+		this.lights.opacity90
+	);
 };
 
 var newGame = new PlaneManGame();
