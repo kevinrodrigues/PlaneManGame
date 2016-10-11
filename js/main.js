@@ -15,7 +15,8 @@ var PlaneManGame = function() {
 	};
 
 	this.lights = {
-		opacity90: 0.9
+		opacity90: 0.9,
+		opacity60: 0.6
 	};
 
     this.events = {
@@ -72,6 +73,7 @@ PlaneManGame.prototype.init = function() {
     console.log('start');
     this.createScene();
 	this.createLights();
+	this.createSea();
 };
 
 PlaneManGame.prototype.createLights = function() {
@@ -102,6 +104,33 @@ PlaneManGame.prototype.createLights = function() {
 	//add lights to `this.scene`
 	this.scene.add(this.hemisphereLight);
 	this.scene.add(this.shadow);
+};
+
+PlaneManGame.prototype.sea = function() {
+	//radius top, radius bottom, height number of sides..
+	this.geom = new THREE.CylinderGeometry(600,600,800,40,10);
+
+	// rotate on the x axis
+	this.geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI/2));
+
+	this.mat = new THREE.MeshPhongMaterial({
+		color:Colors.blue,
+		transparent: true,
+		opacity: this.lights.opacity60,
+		shading: THREE.FlatShading
+	});
+
+	// Create an object in Three.js using mesh.
+	this.mesh = new THREE.Mesh(this.geom, this.mat);
+	this.mesh.receiveShadow = true;
+
+};
+
+PlaneManGame.prototype.createSea = function() {
+	this.seaElement = this.sea();
+
+	this.seaElement.mesh.position.y = -600;
+	this.scene.add(this.mesh);
 };
 
 var newGame = new PlaneManGame();
